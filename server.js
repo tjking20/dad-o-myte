@@ -31,13 +31,6 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
 
-/*
-  if we don't do this here then we'll get this error in apps that use this api
-
-  Fetch API cannot load No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
-
-  read up on CORs here: https://www.maxcdn.com/one/visual-glossary/cors/
-*/
   //allow the api to be accessed by other apps
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -46,25 +39,25 @@ if (process.env.NODE_ENV === 'production') {
     next();
   });
 
-  //3 minutes explain to your partner
 
-// songs Routes
-// ======
-  //documentation for mongojs:
-    //https://github.com/mafintosh/mongojs
 
   app.get("/jokes", function(req, res) {
-
-    //sort songs
-    db.jokes.aggregate(
-      function(error, jokes){
-        res.json(jokes);
-      }
+    // Grab every doc in the Articles array
+      db.jokes.find({}, function(error, jokes) {
+        // Log any errors
+        if (error) {
+          console.log(error);
+        }
+        // Or send the doc to the browser as a json object
+        else {
+          res.json(jokes);
+        }
     });
   });
 
   // Handle form submission, save submission to mongo
   app.post("/create", function(req, res) {
+    console.log("hit route")
     
     // Insert the song into the songs collection
     db.jokes.insert(req.body, function(error, savedJokes) {
