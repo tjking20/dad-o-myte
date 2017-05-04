@@ -74,93 +74,80 @@ if (process.env.NODE_ENV === 'production') {
       }else {
         //the reason why we are sending the savedJokes back is because we now have an _id to give to the client
         res.json(savedJokes);
+        console.log("route hit");
       }
     });
   });
 
 
-  //one song
-  app.get("/songs/:id", function(req, res) {
-    db.songs.findOne({
-      "_id": mongojs.ObjectId(req.params.id)
-    }, function(error, oneSong) {
-      if (error) {
-        res.send(error);
-      }else {
-        res.json(oneSong);
-      }
-    });
-  });
+  // //one song
+  // app.get("/songs/:id", function(req, res) {
+  //   db.songs.findOne({
+  //     "_id": mongojs.ObjectId(req.params.id)
+  //   }, function(error, oneSong) {
+  //     if (error) {
+  //       res.send(error);
+  //     }else {
+  //       res.json(oneSong);
+  //     }
+  //   });
+  // });
 
-  //update a song
-  app.put("/songs/:id", function(req, res) {
-    //if we use this then we won't get the updated document back
-    /* 
-      db.songs.update({
-        "_id": mongojs.ObjectId(req.params.id)
-      }, {
-        $set: {
-          "artist": req.body.artist,
-          "songName": req.body.songName
-        }
-      }, function(error, editedSong) {
-        if (error) {
-          res.send(error);
-        }else {
-          res.json(editedSong);
-        }
-      });
-    */
+//   //update a song
+//   app.put("/songs/:id", function(req, res) {
+//     //if we use this then we won't get the updated document back
+//     /* 
+//       db.songs.update({
+//         "_id": mongojs.ObjectId(req.params.id)
+//       }, {
+//         $set: {
+//           "artist": req.body.artist,
+//           "songName": req.body.songName
+//         }
+//       }, function(error, editedSong) {
+//         if (error) {
+//           res.send(error);
+//         }else {
+//           res.json(editedSong);
+//         }
+//       });
+//     */
 
-    db.songs.findAndModify({
-      query: { 
-        "_id": mongojs.ObjectId(req.params.id) 
-      },
-      update: { $set: {
-        "artist": req.body.artist, "songName": req.body.songName } 
-      },
-      new: true
-      }, function (err, editedSong) {
-          res.json(editedSong);
-      });
-  });
+//     db.songs.findAndModify({
+//       query: { 
+//         "_id": mongojs.ObjectId(req.params.id) 
+//       },
+//       update: { $set: {
+//         "artist": req.body.artist, "songName": req.body.songName } 
+//       },
+//       new: true
+//       }, function (err, editedSong) {
+//           res.json(editedSong);
+//       });
+//   });
 
-//up to 8:59 explain with your partners
-  app.put("/songs/votes/:id/:direction", function(req, res){
+// //up to 8:59 explain with your partners
+//   app.put("/songs/votes/:id/:direction", function(req, res){
 
-    var voteChange = 0;
+//     var voteChange = 0;
 
-    if (req.params.direction == 'up') voteChange = 1;
-    else voteChange = -1; 
+//     if (req.params.direction == 'up') voteChange = 1;
+//     else voteChange = -1; 
 
-    //this is wrong I want to grab the current votes and increment by 1
-    db.songs.findAndModify({
-      query: { 
-        "_id": mongojs.ObjectId(req.params.id) 
-      },
-      update: { $inc: { votes: voteChange} },  
-      new: true
-      }, function (err, editedSong) {
-          res.json(editedSong);
-      });
-  });
+//     //this is wrong I want to grab the current votes and increment by 1
+//     db.songs.findAndModify({
+//       query: { 
+//         "_id": mongojs.ObjectId(req.params.id) 
+//       },
+//       update: { $inc: { votes: voteChange} },  
+//       new: true
+//       }, function (err, editedSong) {
+//           res.json(editedSong);
+//       });
+//   });
 
-  app.delete("/songs/:id", function(req, res) {
-    var id = req.params.id;
-
-    db.songs.remove({
-      "_id": mongojs.ObjectID(id)
-    }, function(error, removed) {
-      if (error) {
-        res.send(error);
-      }else {
-        res.json(id);
-      }
-    });
-  });
-  
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, './client/public/index.html'));
+  app.get('/form', function(req, res) {
+    res.sendFile(path.join(__dirname, './index.html'));
   });
 
 // Listen on port 3001
