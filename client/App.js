@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
+import { Text, View, StyleSheet, Image, Button } from 'react-native';
 import { Constants } from 'expo';
 
 export default class App extends Component {
@@ -8,22 +8,52 @@ export default class App extends Component {
   // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
   this.state = {
     joke: "",
-    newJoke: ""
+    newJoke: "",
+    gif: ""
   };
 }
 
   componentDidMount(){
+    
     fetch("https://dad-o-myte.herokuapp.com/jokes")
     .then(res => res.json())
     .then(jokes => {
-
-
       let joke = jokes[Math.floor(Math.random()*jokes.length)]
-      console.log(joke)
       this.setState({joke: joke.joke})
+      console.log(this.state)
+    })
+    
+    fetch("http://api.giphy.com/v1/gifs/search?q=laughing&api_key=dc6zaTOxFJmzC")
+    .then(res =>res.json())
+    .then(gifs => {
+      let data = gifs.data;
+      let newGif = data[Math.floor(Math.random() * data.length)]
+      this.setState({gif: newGif.images.fixed_height_small.url})
+      console.log(this.state)
     })
   }
-  
+
+
+
+  _handleButtonPress = () => {
+    console.log("button")
+    fetch("https://dad-o-myte.herokuapp.com/jokes")
+    .then(res => res.json())
+    .then(jokes => {
+      let joke = jokes[Math.floor(Math.random()*jokes.length)]
+      this.setState({joke: joke.joke})
+      console.log(this.state)
+    })
+    
+    fetch("http://api.giphy.com/v1/gifs/search?q=laughing&api_key=dc6zaTOxFJmzC")
+    .then(res =>res.json())
+    .then(gifs => {
+      let data = gifs.data;
+      let newGif = data[Math.floor(Math.random() * data.length)]
+      this.setState({gif: newGif.images.fixed_height_small.url})
+      console.log(this.state)
+    })
+  };
   // _handleButtonPress = () => {
   //   return fetch("https://morning-mesa-23625.herokuapp.com/songs", {
   //     method: 'POST',
@@ -63,15 +93,15 @@ export default class App extends Component {
   //     });
   //   })
   // };
-  
+
   // /*
   // function _handleVote(_id, direction) {
-  
+
   // }
   // */
   // _handleVote = (_id, direction) => {
   //   console.log(_id, direction);
-    
+
   //   return fetch(`https://morning-mesa-23625.herokuapp.com/songs/votes/${_id}/${direction}`, {
   //     method: 'PUT',
   //     headers: {
@@ -83,7 +113,7 @@ export default class App extends Component {
   //     let songsUpdated = this.state.songs._dataBlob.s1.map(sng => {
   //       return editedSong._id == sng._id ? editedSong : sng
   //     });
-      
+
   //     this.setState({
   //       songs : this.state.songs.cloneWithRows(songsUpdated)
   //     });
@@ -95,8 +125,16 @@ export default class App extends Component {
       <View style={styles.container}>
         <Text>Dad O Myte!</Text>
         <Text>{this.state.joke}</Text>
-       
-
+        <Image
+          source={{ uri: this.state.gif }}
+          style={{ height: 200, width: 200 }}
+        />
+    
+        <Button
+          title="next"
+          onPress={this._handleButtonPress}
+        />
+    
       {/*  
         <Text style={styles.heading}>Add a New Song</Text>
         <TextInput
@@ -124,24 +162,11 @@ export default class App extends Component {
         <Text style={styles.item}>Artist: {song.artist} | Song: {song.songName} | Votes: {song.votes}</Text>
         
         <Button
-          title="Up Vote"
-          onPress={() => this._handleVote(song._id, 'up')}
+          title="Press me"
+          onPress={this._handleButtonPress}
         />
-        
-        <Button
-          title="Down Vote"
-          onPress={() => this._handleVote(song._id, 'down')}
-        />
-        
-        <Button
-          title="Delete"
-          onPress={() => this._handleDelete(song._id)}
-        />
-
-        <Button
-          title="Edit"
-          onPress={() => this.handleEdit()}
-        />
+      
+       
         
         </View>}
       />*/}  
@@ -158,11 +183,11 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
   },
-  item: {
-    marginTop: 10
-  },
-  heading: {
-    fontSize: 28,
-    fontWeight: 'bold'
-  }
+  // item: {
+  //   marginTop: 10
+  // },
+  // heading: {
+  //   fontSize: 28,
+  //   fontWeight: 'bold'
+  // }
 });
