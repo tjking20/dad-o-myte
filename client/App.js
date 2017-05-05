@@ -2,18 +2,21 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Image, Button, TextInput} from 'react-native';
 import { Constants } from 'expo';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import Display from 'react-native-display';
 
 export default class App extends Component {
   constructor() {
   super();
-  // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
   this.state = {
     gestureName: 'none',
     joke: "",
     gif: "",
     inputValue: "",
-    vote_up: 0,
-    _id: ""
+    enable: true
+    // vote_up: 0,
+    // _id: "",
+
   };
   // this._handleDownVote = this._handleDownVote.bind(this)
 }
@@ -27,11 +30,18 @@ export default class App extends Component {
 	}
 
 	onSwipeLeft(gestureState) {
-
+    if(this.state.enable == false){
+      this._handleToggleDisplay(); 
+    } else{
+      this._handleButtonPress();
+    }
+    
 	}
 
 	onSwipeRight(gestureState) {
-		this._handleButtonPress();
+
+    this._handleToggleDisplay();
+		
 	}
 
 	onSwipe(gestureName, gestureState) {
@@ -53,7 +63,9 @@ export default class App extends Component {
 		}
 	}
 
+  //mounts a new gif and dad joke
   componentDidMount(){
+    //fetch call to the api
     fetch("https://dad-o-myte.herokuapp.com/jokes")
     .then(res => res.json())
     .then(jokes => {
@@ -62,6 +74,7 @@ export default class App extends Component {
       console.log(this.state)
     });
     
+    //fetch call to the giphy api
     fetch("http://api.giphy.com/v1/gifs/search?q=laughing&api_key=dc6zaTOxFJmzC")
     .then(res =>res.json())
     .then(gifs => {
@@ -72,7 +85,8 @@ export default class App extends Component {
   }
 
 
-
+  //handleButtonPress runs the same code as componentDidMount.
+  //allows us to load a new joke
   _handleButtonPress = () => {
     fetch("https://dad-o-myte.herokuapp.com/jokes")
     .then(res => res.json())
@@ -92,6 +106,17 @@ export default class App extends Component {
     })
   };
 
+  _handleToggleDisplay = () => {
+    // let toggle = !this.state.enable;
+    // this.setState({enable: toggle});
+    if(this.state.enable == true){
+      this.setState({enable: false});
+    } else{
+      this.setState({enable: true})
+    }
+  };
+
+  //TIM YOU MAY NEED TO MOVE THIS
   _handleTextChange = inputValue => {
     this.setState({ inputValue });
   };
@@ -116,21 +141,21 @@ export default class App extends Component {
   };
 
  
-  _handleUpVote = () => {
-    let id = this.state._id;
-    return fetch(`https://dad-o-myte.herokuapp.com/jokes/${id}/vote_up`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-    .then((joke) => {
-      this.setState({vote_up: joke.vote_up });
-      console.log("djdjdjj");
-    })
-    .catch((err) => console.log(err));
-  };
+  // _handleUpVote = () => {
+  //   let id = this.state._id;
+  //   return fetch(`https://dad-o-myte.herokuapp.com/jokes/${id}/vote_up`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     }
+  //   }).then(res => res.json())
+  //   .then((joke) => {
+  //     this.setState({vote_up: joke.vote_up });
+  //     console.log("djdjdjj");
+  //   })
+  //   .catch((err) => console.log(err));
+  // };
 
   render() {
 	  const config = {
@@ -148,19 +173,44 @@ export default class App extends Component {
             config={config}
         >
         <Text style={styles.header}>Dad O Myte!</Text>
+        <Button title="toggle" onPress={this._handleToggleDisplay}/>
+        
+        <Display 
+            enable={this.state.enable} 
+            enterDuration={500} 
+            exitDuration={250}
+            exit="fadeOutRight"
+            enter="fadeInRight"
+        >
+          <TextInput
+            value={this.state.inputValue}
+            onChangeText={this._handleTextChange}
+            style={{ width: 200, height: 44, padding: 8 }}
+          />
 
-        <TextInput
-          value={this.state.inputValue}
-          onChangeText={this._handleTextChange}
-          style={{ width: 200, height: 44, padding: 8 }}
-        />
+          <Text>{this.state.joke}</Text>
 
-        <Text>{this.state.joke}</Text>
+          <Image
+            source={{ uri: this.state.gif }}
+            style={{ height: 200, width: 200 }}
+          />
+        </Display>
+        <Display 
+            enable={!this.state.enable} 
+            enterDuration={500} 
+            exitDuration={250}
+            exit="fadeOutLeft"
+            enter="fadeInLeft"
+        >
+          <TextInput
+            value={this.state.inputValue}
+            onChangeText={this._handleTextChange}
+            style={{ width: 200, height: 44, padding: 8 }}
+          />
 
-        <Image
-          source={{ uri: this.state.gif }}
-          style={{ height: 200, width: 200 }}
-        />
+          <Button title="submit" onPress={this._handleSubmitForm}/>
+        </Display>
+
         </GestureRecognizer>
       </View>
     );
@@ -177,5 +227,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 34
+  },
+  form: {
+    backgroundColor: '#3BACD5'
   }
 });
