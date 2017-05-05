@@ -72,17 +72,32 @@ if (process.env.NODE_ENV === 'production') {
     });
   });
 
-  app.put("/jokes/:id/vote_up", function (req,res){
-    db.jokes.findAndModify({
-      query: {
-        "_id": mongojs.ObjectId(req.params.id)
+  app.get("/jokes/:id/vote_up", function (req, res){
+    // res.send("dhdhdh")
+    // res.send('hi')
+    db.jokes.update({
+        _id: req.params.id
       },
-      update: { $inc: {vote_up: 1} },  
-      new: true
-      }, function (err, editedJoke) {
+      { $inc: {vote_up: 1} }
+      , function (err, editedJoke) {
+        if (err) {
+         res.json(err); 
+        } else {
           res.json(editedJoke);
-      });
-  });
+        }
+      })
+   });
+
+
+// db.jokes.findAndModify({
+//       query: {
+//         _id: "590bee211f7c1fa39c959602"
+//       },
+//       update: { $inc: {vote_up: 1} },
+//       upsert: true,
+//       new: true,
+//       })
+  
   
 
 
