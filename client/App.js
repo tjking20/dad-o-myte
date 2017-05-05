@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, Button } from 'react-native';
+import { Text, View, StyleSheet, Image, Button, TextInput} from 'react-native';
 import { Constants } from 'expo';
 
 export default class App extends Component {
@@ -8,13 +8,12 @@ export default class App extends Component {
   // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
   this.state = {
     joke: "",
-    newJoke: "",
-    gif: ""
+    gif: "",
+    inputValue: ""
   };
 }
 
   componentDidMount(){
-    
     fetch("https://dad-o-myte.herokuapp.com/jokes")
     .then(res => res.json())
     .then(jokes => {
@@ -36,7 +35,6 @@ export default class App extends Component {
 
 
   _handleButtonPress = () => {
-    console.log("button")
     fetch("https://dad-o-myte.herokuapp.com/jokes")
     .then(res => res.json())
     .then(jokes => {
@@ -54,26 +52,36 @@ export default class App extends Component {
       console.log(this.state)
     })
   };
-  // _handleButtonPress = () => {
-  //   return fetch("https://morning-mesa-23625.herokuapp.com/songs", {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       artist: this.state.artist,
-  //       songName: this.state.song,
-  //       votes: 0
-  //     })
-  //   }).then(res => res.json())
-  //   .then(savedSong => {
-  //     let songsUpdated = [...this.state.songs._dataBlob.s1, savedSong];
-  //     this.setState({
-  //       songs : this.state.songs.cloneWithRows(songsUpdated)
-  //     })
-  //   })
-  // };
+
+  _handleTextChange = inputValue => {
+    this.setState({ inputValue });
+  };
+
+  _handleSubmitForm = () => {
+    return fetch("https://dad-o-myte.herokuapp.com/create", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        joke: this.state.inputValue,
+        vote_up: 0,
+        vote_down: 0
+      })
+      
+    }).then(res => res.json())
+    .then(() => {
+      this.setState({inputValue: ""})
+    })
+    // .then(res => res.json())
+    // .then(savedSong => {
+    //   let songsUpdated = [...this.state.songs._dataBlob.s1, savedSong];
+    //   this.setState({
+    //     songs : this.state.songs.cloneWithRows(songsUpdated)
+    //   })
+    // })
+  };
 
   // _handleDelete = (_id) => {
   //   console.log(_id)
@@ -124,6 +132,12 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <Text>Dad O Myte!</Text>
+        
+        <TextInput
+          value={this.state.inputValue}
+          onChangeText={this._handleTextChange}
+          style={{ width: 200, height: 44, padding: 8 }}
+        />
         <Text>{this.state.joke}</Text>
         <Image
           source={{ uri: this.state.gif }}
@@ -134,6 +148,13 @@ export default class App extends Component {
           title="next"
           onPress={this._handleButtonPress}
         />
+        
+      
+        <Button
+          title="submit"
+          onPress={this._handleSubmitForm}
+        />
+      
     
       {/*  
         <Text style={styles.heading}>Add a New Song</Text>
