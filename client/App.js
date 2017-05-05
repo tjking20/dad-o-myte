@@ -10,7 +10,8 @@ export default class App extends Component {
     joke: "",
     gif: "",
     inputValue: "",
-    vote_up: 0
+    vote_up: 0,
+    _id: ""
   };
   // this._handleDownVote = this._handleDownVote.bind(this)
 }
@@ -20,7 +21,7 @@ export default class App extends Component {
     .then(res => res.json())
     .then(jokes => {
       let joke = jokes[Math.floor(Math.random()*jokes.length)]
-      this.setState({joke: joke.joke, vote_up: joke.vote_up})
+      this.setState({_id: joke._id, joke: joke.joke, vote_up: joke.vote_up})
       console.log(this.state)
     })
     
@@ -40,7 +41,7 @@ export default class App extends Component {
     .then(res => res.json())
     .then(jokes => {
       let joke = jokes[Math.floor(Math.random()*jokes.length)]
-      this.setState({joke: joke.joke})
+      this.setState({_id: joke._id, joke: joke.joke, vote_up: joke.vote_up})
       console.log(this.state)
     })
     
@@ -75,51 +76,20 @@ export default class App extends Component {
     .then(() => {
       this.setState({inputValue: ""})
     })
-    // .then(res => res.json())
-    // .then(savedSong => {
-    //   let songsUpdated = [...this.state.songs._dataBlob.s1, savedSong];
-    //   this.setState({
-    //     songs : this.state.songs.cloneWithRows(songsUpdated)
-    //   })
-    // })
   };
 
-  // _handleDelete = (_id) => {
-  //   console.log(_id)
-
-  //   return fetch(`https://morning-mesa-23625.herokuapp.com/songs/${_id}`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     }
-  //   }).then(res => res.json())
-  //   .then(oldSongId => {
-  //     let songsUpdated = this.state.songs._dataBlob.s1.filter((song, i) => song._id !== oldSongId)
-  //     console.log('deleted id ', oldSongId)
-  //     this.setState({
-  //       songs : this.state.songs.cloneWithRows(songsUpdated)
-  //     });
-  //   })
-  // };
-
-  // /*
-  // function _handleVote(_id, direction) {
-
-  // }
-  // */
+ 
   _handleUpVote = () => {
-    
-    console.log("ohoi")
-    return fetch("https://dad-o-myte.herokuapp.com/jokes/${_id}/vote_up", {
+    let id = this.state._id
+    return fetch(`https://dad-o-myte.herokuapp.com/jokes/${id}/vote_up`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
     }).then(res => res.json())
-    .then(() => {
-      this.setState({vote_up: this.state.vote_up + 1 })
+    .then((joke) => {
+      this.setState({vote_up: joke.vote_up })
       console.log("djdjdjj");
     })
     .catch((err) => console.log(err));
@@ -171,39 +141,8 @@ export default class App extends Component {
     
       {/*  
         <Text style={styles.heading}>Add a New Song</Text>
-        <TextInput
-          style={{ width: 200, height: 44, padding: 8 }}
-          defaultValue="artist"
-          onChangeText={(text) => this.setState({artist: text})}
-        />
         
-        <TextInput
-          style={{ width: 200, height: 44, padding: 8 }}
-          defaultValue="song"
-          onChangeText={(text) => this.setState({song: text})}
-        />
-        
-        <Button
-          title="Add Song"
-          onPress={this._handleButtonPress}
-        />
-    
-      <ListView
-        dataSource={this.state.songs}
-        renderRow={(song) => 
-        <View style={styles.container}>
-        
-        <Text style={styles.item}>Artist: {song.artist} | Song: {song.songName} | Votes: {song.votes}</Text>
-        
-        <Button
-          title="Press me"
-          onPress={this._handleButtonPress}
-        />
-      
-       
-        
-        </View>}
-      />*/}  
+       */}  
       </View>
     );
   }
