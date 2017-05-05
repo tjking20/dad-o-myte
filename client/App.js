@@ -9,8 +9,11 @@ export default class App extends Component {
   this.state = {
     joke: "",
     gif: "",
-    inputValue: ""
+    inputValue: "",
+    vote_up: ""
   };
+  this._handleUpVote = this._handleUpVote.bind(this)
+  // this._handleDownVote = this._handleDownVote.bind(this)
 }
 
   componentDidMount(){
@@ -18,7 +21,7 @@ export default class App extends Component {
     .then(res => res.json())
     .then(jokes => {
       let joke = jokes[Math.floor(Math.random()*jokes.length)]
-      this.setState({joke: joke.joke})
+      this.setState({joke: joke.joke, vote_up: joke.vote_up})
       console.log(this.state)
     })
     
@@ -28,7 +31,6 @@ export default class App extends Component {
       let data = gifs.data;
       let newGif = data[Math.floor(Math.random() * data.length)]
       this.setState({gif: newGif.images.fixed_height_small.url})
-      console.log(this.state)
     })
   }
 
@@ -107,26 +109,15 @@ export default class App extends Component {
 
   // }
   // */
-  // _handleVote = (_id, direction) => {
-  //   console.log(_id, direction);
-
-  //   return fetch(`https://morning-mesa-23625.herokuapp.com/songs/votes/${_id}/${direction}`, {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     }
-  //   }).then(res => res.json())
-  //   .then(editedSong => {
-  //     let songsUpdated = this.state.songs._dataBlob.s1.map(sng => {
-  //       return editedSong._id == sng._id ? editedSong : sng
-  //     });
-
-  //     this.setState({
-  //       songs : this.state.songs.cloneWithRows(songsUpdated)
-  //     });
-  //   })
-  // }
+  _handleUpVote = () => {
+    return fetch("https://dad-o-myte.herokuapp.com/${_id}/up_vote", {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+  }
 
   render() {
     return (
@@ -154,6 +145,22 @@ export default class App extends Component {
           title="submit"
           onPress={this._handleSubmitForm}
         />
+       {/*
+         <TouchableHighlight onPress={this._handleUpVote}>
+        <Image
+          // style={styles.button}
+          source={('https://www.gerberlife.com/sites/all/themes/custom/gerber/img/icon-thumbs-up.png')}
+         />
+      </TouchableHighlight>
+       
+       */} 
+    
+        <Text>{this.state.vote_up}</Text>
+        <Button
+          title="^"
+          onPress={this._handleUpVote}
+        />
+      
       
     
       {/*  
