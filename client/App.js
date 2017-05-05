@@ -10,9 +10,8 @@ export default class App extends Component {
     joke: "",
     gif: "",
     inputValue: "",
-    vote_up: ""
+    vote_up: 0
   };
-  this._handleUpVote = this._handleUpVote.bind(this)
   // this._handleDownVote = this._handleDownVote.bind(this)
 }
 
@@ -110,13 +109,20 @@ export default class App extends Component {
   // }
   // */
   _handleUpVote = () => {
-    return fetch("https://dad-o-myte.herokuapp.com/${_id}/vote_up", {
-      method: 'PUT',
+    
+    console.log("ohoi")
+    return fetch("https://dad-o-myte.herokuapp.com/jokes/${_id}/vote_up", {
+      method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
+    }).then(res => res.json())
+    .then(() => {
+      this.setState({vote_up: this.state.vote_up + 1 })
+      console.log("djdjdjj");
     })
+    .catch((err) => console.log(err));
   }
 
   render() {
