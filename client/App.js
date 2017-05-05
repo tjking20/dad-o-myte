@@ -110,7 +110,7 @@ export default class App extends Component {
   // }
   // */
   _handleUpVote = () => {
-    return fetch("https://dad-o-myte.herokuapp.com/${_id}/up_vote", {
+    return fetch("https://dad-o-myte.herokuapp.com/${_id}/vote_up", {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',

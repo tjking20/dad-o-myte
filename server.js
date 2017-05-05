@@ -72,6 +72,19 @@ if (process.env.NODE_ENV === 'production') {
     });
   });
 
+  app.put("/jokes/:id/vote_up", function (req,res){
+    db.jokes.findAndModify({
+      query: {
+        "_id": mongojs.ObjectId(req.params.id)
+      },
+      update: { $inc: {vote_up: 1} },  
+      new: true
+      }, function (err, editedJoke) {
+          res.json(editedJoke);
+      });
+  });
+  
+
 
   // //one song
   // app.get("/songs/:id", function(req, res) {
