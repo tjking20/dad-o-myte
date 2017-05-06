@@ -203,10 +203,11 @@ export default class App extends Component {
           <TextInput
             value={this.state.inputValue}
             onChangeText={this._handleTextChange}
-            style={{ width: 200, height: 44, padding: 8 }}
+            style={styles.formView}
           />
+        
 
-          <Button title="submit" onPress={this._handleSubmitForm}/>
+          <Button title="submit" onPress={this._handleSubmitForm} style={styles.input}/>
         </Display>
 
         </GestureRecognizer>
@@ -223,21 +224,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // justifyContent: 'center',
     // paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#80ff80',
+    backgroundColor: '#4BDB70',
   }, h1: {
     flex: 2,
     fontSize: 30,
-
+    color: '#BEE0D3',
+    textShadowColor: 'white',
     textAlign: 'center',
   },paragraph: {
     padding: 30,
-    backgroundColor: '#00cc00',
+    backgroundColor: '#4BDB70',
     flex: 3,
-    // marginBottom: 10,
-    fontSize: 18,
+    maxHeight: 250,
+    fontSize: 22,
     textAlign: 'center',
     width: 330,
     color: "white",
+    borderWidth: 1,
+    borderColor: '#ffff66',
   },image: {
     flex: 5,
     height: 400,
@@ -245,25 +249,30 @@ const styles = StyleSheet.create({
     // height: 200,
     // width: 200,
     backgroundColor: '#34495e',
-    borderWidth: 2,
-    borderColor: '#ffff66',
     alignSelf: 'center',
     marginBottom: 100,
-    // marginBottom: 200,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius:10,
-    // overflow: 'visible',
   }, header:{
     paddingTop: 30,
     height: 64,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: '#6D6C6B',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#DDDDDD',
     paddingHorizontal: 12,
     alignItems: 'center',
     flexDirection: 'row', // step 1
-    width: 330,
-
-    
+    width: 330, 
+  }, formView: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    width: 320,
+    height: 250,
+    fontSize: 22,
+    backgroundColor: '#CBCBCB',
+    borderWidth: 1,
+    borderColor: '#ffff66',
+    color: "white",
+  }, input: {
+    borderColor: 'blue',
+    backgroundColor: 'blue',
   }
 });
