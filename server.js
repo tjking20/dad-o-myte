@@ -72,21 +72,21 @@ if (process.env.NODE_ENV === 'production') {
     });
   });
 
-  app.get("/jokes/:id/vote_up", function (req, res){
-    // res.send("dhdhdh")
-    // res.send('hi')
-    db.jokes.update({
-        _id: req.params.id
-      },
-      { $inc: {vote_up: 1} }
-      , function (err, editedJoke) {
-        if (err) {
-         res.json(err); 
-        } else {
-          res.json(editedJoke);
-        }
-      })
-   });
+  // app.get("/jokes/:id/vote_up", function (req, res){
+  //   // res.send("dhdhdh")
+  //   // res.send('hi')
+  //   db.jokes.update({
+  //       _id: req.params.id
+  //     },
+  //     { $inc: {vote_up: 1} }
+  //     , function (err, editedJoke) {
+  //       if (err) {
+  //        res.json(err); 
+  //       } else {
+  //         res.json(editedJoke);
+  //       }
+  //     })
+  //  });
 
 
 // db.jokes.findAndModify({

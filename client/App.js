@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, Button, TextInput} from 'react-native';
+import { Text, View, StyleSheet, Image, Button, TextInput} from 'react-native'
+// import {  StyleSheet, Image, TextInput} from 'react-native';
+// import { Container, Header, Title, Content, Text, Button, Left, Right, Body, Icon } from 'native-base';
 import { Constants } from 'expo';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import Display from 'react-native-display';
@@ -18,7 +20,6 @@ export default class App extends Component {
     // _id: "",
 
   };
-  // this._handleDownVote = this._handleDownVote.bind(this)
 }
 
 	onSwipeUp(gestureState) {
@@ -70,7 +71,7 @@ export default class App extends Component {
     .then(res => res.json())
     .then(jokes => {
       let joke = jokes[Math.floor(Math.random()*jokes.length)]
-      this.setState({_id: joke._id, joke: joke.joke, vote_up: joke.vote_up})
+      this.setState({joke: joke.joke})
       console.log(this.state)
     });
     
@@ -80,7 +81,7 @@ export default class App extends Component {
     .then(gifs => {
       let data = gifs.data;
       let newGif = data[Math.floor(Math.random() * data.length)]
-      this.setState({gif: newGif.images.fixed_height_small.url})
+      this.setState({gif: newGif.images.fixed_height.url})
     })
   }
 
@@ -92,7 +93,7 @@ export default class App extends Component {
     .then(res => res.json())
     .then(jokes => {
       let joke = jokes[Math.floor(Math.random()*jokes.length)];
-      this.setState({_id: joke._id, joke: joke.joke, vote_up: joke.vote_up});
+      this.setState({joke: joke.joke});
       console.log(this.state)
     });
     
@@ -101,7 +102,7 @@ export default class App extends Component {
     .then(gifs => {
       let data = gifs.data;
       let newGif = data[Math.floor(Math.random() * data.length)];
-      this.setState({gif: newGif.images.fixed_height_small.url});
+      this.setState({gif: newGif.images.fixed_height.url});
       console.log(this.state)
     })
   };
@@ -172,8 +173,7 @@ export default class App extends Component {
             onSwipeRight={(state) => this.onSwipeRight(state)}
             config={config}
         >
-        <Text style={styles.header}>Dad O Myte!</Text>
-        <Button title="toggle" onPress={this._handleToggleDisplay}/>
+        <Text style={styles.h1}>Dad O Myte!</Text>
         
         <Display 
             enable={this.state.enable} 
@@ -182,17 +182,12 @@ export default class App extends Component {
             exit="fadeOutRight"
             enter="fadeInRight"
         >
-          <TextInput
-            value={this.state.inputValue}
-            onChangeText={this._handleTextChange}
-            style={{ width: 200, height: 44, padding: 8 }}
-          />
 
-          <Text>{this.state.joke}</Text>
+          <Text style={styles.paragraph}>{this.state.joke}</Text>
 
           <Image
             source={{ uri: this.state.gif }}
-            style={{ height: 200, width: 200 }}
+            style={styles.image}
           />
         </Display>
         <Display 
@@ -217,18 +212,66 @@ export default class App extends Component {
   }
 }
 
+
+
+
+  {/*
+
+
+      */}
+
+
+
+{/**/}
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     paddingTop: Constants.statusBarHeight,
+//     backgroundColor: '#ecf0f1',
+//   },
+//   header: {
+//     fontSize: 34
+//   },
+//   form: {
+//     backgroundColor: '#3BACD5'
+//   },image: {
+//     flex: 5,
+//     height: 200,
+//     width: 200,
+//   }
+// });
+
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-  },
-  header: {
-    fontSize: 34
-  },
-  form: {
-    backgroundColor: '#3BACD5'
+    backgroundColor: '#80ff80',
+  }, h1: {
+    flex: 2,
+    fontSize: 30,
+  },paragraph: {
+    padding: 20,
+    backgroundColor: '#00cc00',
+    flex: 3,
+    margin: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#34495e',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#ffff66',
+  },image: {
+    flex: 5,
+    height: 200,
+    width: 200,
   }
 });
