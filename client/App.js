@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, Button, TextInput} from 'react-native'
-// import {  StyleSheet, Image, TextInput} from 'react-native';
-// import { Container, Header, Title, Content, Text, Button, Left, Right, Body, Icon } from 'native-base';
+import { Text, View, StyleSheet, Image, Button, TextInput} from 'react-native';
 import { Constants } from 'expo';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import Display from 'react-native-display';
+
 
 export default class App extends Component {
   constructor() {
@@ -89,6 +88,7 @@ export default class App extends Component {
   //handleButtonPress runs the same code as componentDidMount.
   //allows us to load a new joke
   _handleButtonPress = () => {
+
     fetch("https://dad-o-myte.herokuapp.com/jokes")
     .then(res => res.json())
     .then(jokes => {
@@ -173,7 +173,10 @@ export default class App extends Component {
             onSwipeRight={(state) => this.onSwipeRight(state)}
             config={config}
         >
-        <Text style={styles.h1}>Dad O Myte!</Text>
+        <View style={styles.header}>
+          <Text style={styles.h1}>Dad O Myte!</Text>
+        </View>
+        
         
         <Display 
             enable={this.state.enable} 
@@ -213,65 +216,54 @@ export default class App extends Component {
 }
 
 
-
-
-  {/*
-
-
-      */}
-
-
-
-{/**/}
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     paddingTop: Constants.statusBarHeight,
-//     backgroundColor: '#ecf0f1',
-//   },
-//   header: {
-//     fontSize: 34
-//   },
-//   form: {
-//     backgroundColor: '#3BACD5'
-//   },image: {
-//     flex: 5,
-//     height: 200,
-//     width: 200,
-//   }
-// });
-
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
+    // justifyContent: 'center',
+    // paddingTop: Constants.statusBarHeight,
     backgroundColor: '#80ff80',
   }, h1: {
     flex: 2,
     fontSize: 30,
+
+    textAlign: 'center',
   },paragraph: {
-    padding: 20,
+    padding: 30,
     backgroundColor: '#00cc00',
     flex: 3,
-    margin: 10,
+    // marginBottom: 10,
     fontSize: 18,
-    fontWeight: 'bold',
     textAlign: 'center',
-    color: '#34495e',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#ffff66',
+    width: 330,
+    color: "white",
   },image: {
     flex: 5,
-    height: 200,
-    width: 200,
+    height: 400,
+    width: 330,
+    // height: 200,
+    // width: 200,
+    backgroundColor: '#34495e',
+    borderWidth: 2,
+    borderColor: '#ffff66',
+    alignSelf: 'center',
+    marginBottom: 100,
+    // marginBottom: 200,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius:10,
+    // overflow: 'visible',
+  }, header:{
+    paddingTop: 30,
+    height: 64,
+    backgroundColor: '#F4F4F4',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#DDDDDD',
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    flexDirection: 'row', // step 1
+    width: 330,
+
+    
   }
 });
