@@ -207,12 +207,16 @@ export default class App extends Component {
           />
         
 
-          <Button title="submit" onPress={this._handleSubmitForm} style={styles.input}/>
+          <Button title="Add your own! =>" onPress={this._handleSubmitForm} color='white'/>
+          <View style={styles.push}></View>
+
         </Display>
 
         </GestureRecognizer>
       </View>
     );
+
+
   }
 }
 
@@ -228,9 +232,11 @@ const styles = StyleSheet.create({
   }, h1: {
     flex: 2,
     fontSize: 30,
-    color: '#BEE0D3',
+    color: '#DD8690',
     textShadowColor: 'white',
-    textAlign: 'center',
+    // textAlign: 'center',
+    letterSpacing: 5,
+    fontWeight: 'bold',
   },paragraph: {
     padding: 30,
     backgroundColor: '#4BDB70',
@@ -272,7 +278,20 @@ const styles = StyleSheet.create({
     borderColor: '#ffff66',
     color: "white",
   }, input: {
-    borderColor: 'blue',
-    backgroundColor: 'blue',
+    padding:10, 
+    height:45, 
+    overflow:'hidden', 
+    borderRadius:4, 
+    backgroundColor: 'white'
+  }, p: {
+    margin: 40,
+    color: "white",
+    fontSize: 20,
+    fontWeight: 'bold',
+    textDecorationStyle: "solid",
+    textDecorationColor: 'white',
+    textDecorationLine: 'underline'
+  }, push:{
+    height: 300,
   }
 });
